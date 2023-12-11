@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    .head-name{
+      background-color: royalblue;
+      font-family: Sans-serif;
+      text-align: center;
+      border: none;
+      border-bottom: 10px;
+      border-top: 10px;
+      border-radius: 30px;
+      color: white;
+      font-weight: bold;
+    }
+    body{
+      color:whitesmoke;
+      background-color: rgb(30, 30, 30);
+      font-family: Arial;
+    }
+    .RPSGAME{
+      text-align: center;
+      background-color: transparent;
+      margin: 0px 250px;
+      border: none;
+      border-bottom: 10px;
+      border-top: 10px;
+      border-radius: 30px;
+    }
+    .game-icon{
+      background-color: transparent;
+      border :3px solid white;
+      border-radius: 100%;
+      width: 170px;
+      height: 170px;
+      margin-right: 40px;
+      cursor: pointer;
+    }
+    .game-icons{
+      width: 150px;
+      height: 150px;
+    }
+    .end{
+      text-align: center;
+      background-color: royalblue;
+      font-family: Sans-serif;
+      text-align: center;
+      border: none;
+      border-bottom: 10px;
+      border-top: 10px;
+      border-radius: 30px;
+      color: white;
+      font-weight: bold;
+
+    }
+    .flip-img {
+      transform: scalex(-1);
+    }
+    
+  </style>
+</head>
+<body onkeypress="
+  if(event.key==='1'){
+    gameRules('ROCK');
+  }else if(event.key==='2'){
+    gameRules('PAPER');
+  }else if(event.key==='3'){
+    gameRules('SCISSORS');
+  }
+
+
+
+">
+   
+  <h1  class="head-name" >Rock Paper Scissors Game</h1>
+    <div class="RPSGAME">
+      <button class ="game-icon"onclick=
+        "gameRules('ROCK');">
+          <img class="game-icons" src="rock.png"
+      ></button>
+      <button class ="game-icon" onclick=
+        "gameRules('PAPER');">
+          <img class="game-icons" src="paper.png"  >
+      </button> 
+      <button class ="game-icon" onclick=
+        "gameRules('SCISSORS');">
+          <img class="game-icons" src="scissors.png" ></button> 
+    </div>
+
+    <div  class="end" > 
+      <h1 class="js-game-result">You win!!!!</h1>
+      <p class="pick"></p>
+      <h4 class="scores"></h4>
+    <h1>
+      <button onclick=
+        "scorezero();">Clear Scores
+      </button>
+    </h1>
+    </div>
+
+
+<script>
+    let  score=JSON.parse(localStorage.getItem('SCORE')) || {
+    win:0,lose:0,tie:0
+     };
+     document.querySelector('.scores').innerHTML=`Your Wins: ${score.win}   Your Loses: ${score.lose}   Tie: ${score.tie}`
+    
+    function gameRules(PlayerChoice){
+      
+    
+      ComputerChoice=computerMove();
+      let result;
+      if(PlayerChoice==='ROCK'){
+        if(ComputerChoice==='ROCK'){
+          result ='Tie';
+        }
+        else if(ComputerChoice==='PAPER'){
+          result ='You lose';
+        }
+        else if(ComputerChoice==='SCISSORS'){
+          result = 'You win';
+        }
+      }else if(PlayerChoice==='SCISSORS'){
+          if(ComputerChoice==='ROCK'){
+            result ='You lose';
+          }
+          else if(ComputerChoice==='PAPER'){
+            result ='You win';
+          }
+          else if(ComputerChoice==='SCISSORS'){
+            result = 'Tie';
+          }
+      }else if(PlayerChoice==='PAPER'){
+          if(ComputerChoice==='ROCK'){
+            result ='You win';
+            
+          }
+          else if(ComputerChoice==='PAPER'){
+            result ='Tie';
+          }
+          else if(ComputerChoice==='SCISSORS'){
+            result = 'You lose';
+          }    
+      }
+      let RESULT;
+      if(result==='Tie'){
+        score.tie++;
+        RESULT='Tie.';
+      }else if(result==='You lose'){
+        score.lose++;
+        RESULT='You Lose.';
+      }else if(result==='You win')
+      {
+        score.win++;
+        RESULT='You Won!!!!!!!!';
+      }
+      document.querySelector('.js-game-result').innerHTML=RESULT;
+      let endtext='You ';
+          if(PlayerChoice==='ROCK'){
+            endtext+='<img src="rock.png" >';
+          }else if(PlayerChoice==='PAPER'){
+            endtext+='<img src="paper.png">';
+          }else{
+            endtext+='<img src="scissors.png">';
+          }
+
+          if(ComputerChoice==='ROCK'){
+            endtext+='<img src="rock.png" class="flip-img">';
+          }else if(ComputerChoice==='PAPER'){
+            endtext+='<img src="paper.png" class="flip-img">';
+          }else{
+            endtext+='<img src="scissors.png" class="flip-img">';
+          }
+      endtext+='Computer';
+      document.querySelector('.pick').innerHTML=endtext;
+      localStorage.setItem('SCORE',JSON.stringify(score));
+      document.querySelector('.scores').innerHTML=(` Your Wins: ${score.win}   Your Loses: ${score.lose}   Tie: ${score.tie}`);
+
+    }
+
+    function computerMove (){
+        let ComputerChoice='';
+        let Random = Math.random();
+
+        if(Random>=0&&Random<1/3){
+            ComputerChoice='ROCK';
+        }
+        else if(Random>=1/3&&Random<2/3){
+            ComputerChoice='PAPER';
+        }
+        else if (Random>=2/3&&Random<1){
+            ComputerChoice='SCISSORS';
+        }
+        return ComputerChoice;
+        
+    
+    }
+    function scorezero(){
+      score.win=0;
+      score.lose=0;
+      score.tie=0;
+      localStorage.removeItem('SCORE');
+      document.querySelector('.scores').innerHTML=(` Your Wins: ${score.win}   Your Loses: ${score.lose}   Tie: ${score.tie}`)
+    }
+
+    console.log('Test Succesful');
+</script>
+
+
+</body>
+
+
+</html>
